@@ -7,8 +7,8 @@ const board = new five.Board({
         repl: false,
         debug: false,
         io: new Spark({
-          token: '9ca6a5495c71a81e2b5ebc53aefc7bea4e06420b',
-          deviceId: '2b0041001147343339383037',
+          token: process.env.PHOTON_TOKEN,
+          deviceId: process.env.PHOTON_NAME,
         }),
       });
 
