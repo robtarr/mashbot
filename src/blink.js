@@ -4,7 +4,7 @@ import Particle from 'particle-io';
 var board = new five.Board({
   io: new Particle({
     token: process.env.PHOTON_TOKEN,
-    deviceId: process.env.PHOTON_NAME,
+    deviceName: process.env.PHOTON_NAME,
   }),
 });
 

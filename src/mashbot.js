@@ -12,6 +12,7 @@ const board = new five.Board({
 
 let moving = false;
 let speed = 0;
+let dir = 1;
 
 keypress(process.stdin);
 stdin.setRawMode(true);
@@ -20,15 +21,15 @@ stdin.resume();
 console.log('Scanning for robot...');
 board.on('ready', function() {
   const motorA = new five.Motor({
-    pins: {pwm: 'D0', dir: 'D4' },
+    pins: { pwm: 'D0', dir: 'D4' },
     invertPWM: true,
   });
   const motorB = new five.Motor({
-    pins: {pwm: 'D1', dir: 'D5' },
+    pins: { pwm: 'D1', dir: 'D5' },
     invertPWM: true,
   });
   const motorC = new five.Motor({
-    pins: {pwm: 'A4', dir: 'D2' },
+    pins: { pwm: 'A5', dir: 'D3' },
     invertPWM: true,
   });
 
@@ -42,11 +43,46 @@ board.on('ready', function() {
   }
 
   function stop() {
+    console.log('STOP');
     speed = 0;
     moving = false;
     motorA.stop();
     motorB.stop();
-    motorC.stop();
+    motorC.rev(1);
+  }
+
+  function forward() {
+    speed = 255;
+    motorA.fwd(speed);
+    motorB.fwd(speed);
+    moving = true;
+  }
+
+  function backward() {
+    speed = 255;
+    motorA.rev(speed);
+    motorB.rev(speed);
+    moving = true;
+  }
+
+  function turnRight() {
+    if (moving) {
+      motorA.speed(speed * .75);
+      motorB.speed(speed);
+    } else {
+      motorB.fwd(125);
+      motorA.rev(125);
+    }
+  }
+
+  function turnLeft() {
+    if (moving) {
+      motorA.speed(speed);
+      motorB.speed(speed * .75);
+    } else {
+      motorA.fwd(125);
+      motorB.rev(125);
+    }
   }
 
   console.log('Ready!');
@@ -55,31 +91,32 @@ board.on('ready', function() {
 
     if (key.ctrl && key.name == 'c' || key.name == 'q') {
       console.log('Shutting down...');
-      motorA.stop();
-      motorB.stop();
+      stop();
       process.exit();
       return;
     }
 
     flashLED();
     switch (key.name) {
-      case 'b': {
-        console.log('b');
-        flashLED();
+      case 'f': {
+        console.log('*****FLIP*****');
+        dir = dir * -1;
         break;
       }
       case 'up': {
-        speed = 255;
-        motorA.fwd(speed);
-        motorB.fwd(speed);
-        moving = true;
+        if (dir > 0) {
+          forward();
+        } else {
+          backward();
+        }
         break;
       }
       case 'down': {
-        speed = 255;
-        motorA.rev(speed);
-        motorB.rev(speed);
-        moving = true;
+        if (dir > 0) {
+          backward();
+        } else {
+          forward();
+        }
         break;
       }
       case 'space': {
@@ -87,28 +124,23 @@ board.on('ready', function() {
         break;
       }
       case 'right': {
-        if (moving) {
-          motorA.speed(speed * .75);
-          motorB.speed(speed);
+        if (dir > 0) {
+          turnRight();
         } else {
-          motorB.fwd(125);
-          motorA.rev(125);
+          turnLeft();
         }
         break;
       }
       case 'left': {
-        if (moving) {
-          motorA.speed(speed);
-          motorB.speed(speed * .75);
+        if (dir > 0) {
+          turnLeft();
         } else {
-          motorA.fwd(125);
-          motorB.rev(125);
+          turnRight();
         }
         break;
       }
       case 'g': {
-        console.log('g');
-        motorC.fwd(100);
+        motorC.rev(100);
       }
       default: {
         break;
