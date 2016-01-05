@@ -6,7 +6,7 @@
     "start": "node lib/aggregate.js map-data.json"
   },
   "dependencies": {
-    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-es2015": "^6.3",
     "google-sheets-api": "^0.4.0",
     "johnny-five": "^0.9.17",
     "lodash": "^2.4.1",
@@ -15,6 +15,7 @@
     "spark-io": "^0.6.1"
   },
   "devDependencies": {
-    "babel-preset-es2015": "^6.3.13"
+    "babel-cli": "^6.3",
+    "babel-preset-es2015": "^6.3"
   }
 }
