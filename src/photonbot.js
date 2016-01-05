@@ -27,10 +27,6 @@ board.on('ready', function() {
     pins: {pwm: 'D1', dir: 'D5' },
     invertPWM: true,
   });
-  const motorC = new five.Motor({
-    pins: {pwm: 'A4', dir: 'D2' },
-    invertPWM: true,
-  });
 
   const boardLED = new five.Led('D7');
 
@@ -46,7 +42,6 @@ board.on('ready', function() {
     moving = false;
     motorA.stop();
     motorB.stop();
-    motorC.stop();
   }
 
   console.log('Ready!');
@@ -64,7 +59,6 @@ board.on('ready', function() {
     flashLED();
     switch (key.name) {
       case 'b': {
-        console.log('b');
         flashLED();
         break;
       }
@@ -105,10 +99,6 @@ board.on('ready', function() {
           motorB.rev(125);
         }
         break;
-      }
-      case 'g': {
-        console.log('g');
-        motorC.fwd(100);
       }
       default: {
         break;

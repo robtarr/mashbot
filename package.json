@@ -9,7 +9,9 @@
     "babel-preset-es2015": "^6.3",
     "google-sheets-api": "^0.4.0",
     "johnny-five": "^0.9.17",
+    "keypress": "^0.2.1",
     "lodash": "^2.4.1",
+    "macmouse": "^1.2.0",
     "moment": "~2.5.1",
     "particle-io": "^0.12.0",
     "spark-io": "^0.6.1"
